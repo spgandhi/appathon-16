@@ -1,0 +1,43 @@
+<div ng-controller="PartiesListCtrl">
+  <button ng-click="fetchdata()">Fetch</button>
+  <login-buttons></login-buttons>
+  <form>
+    <input ng-model="newItem.name">
+    <select ng-model="newItem.type">
+      <option value="top">top</option>
+      <option value="bottom">bottom</option>
+      <option value="shoes">Shoes</option>
+      <option value="others">Other</option>
+    </select>
+    <input ng-model="newItem.url">
+    <button ng-click="addItem()">Add item</button>
+  </form>
+
+  <form>
+    <input ng-model="newRating.question">
+    <input ng-model="newRating.url1">
+    <input ng-model="newRating.url2">
+    <button ng-click="addRating()">Add item</button>
+  </form>
+
+  <ul>
+    <li ng-repeat="item in items">
+      <img src="{{item.url}}" width="300px" height="200px">
+      {{item.name}} - {{item.type}}
+    </li>
+  </ul>
+
+  <div>
+    
+      <img src={{rating.url1}} width="500px" height="300px">
+      <img src="{{rating.url2}}" width="500px" height="300px">
+      {{item.question}}
+      <input type="radio" ng-model="answer" value="1"> 1
+      <input type="radio" ng-model="answer" value="2"> 2
+      <button ng-click="submitRating()">Submit</button>  
+    
+  </div>
+
+  
+</div>
+
