@@ -27,7 +27,7 @@ app.config(function($stateProvider) {
     resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
-          return $q.reject();
+          return $q.reject('AUTH_REQUIRED');
         } else {
           return $q.resolve();
         }
@@ -43,7 +43,7 @@ app.config(function($stateProvider) {
     resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
-          return $q.reject();
+          return $q.reject('AUTH_REQUIRED');
         } else {
           return $q.resolve();
         }
@@ -59,7 +59,7 @@ app.config(function($stateProvider) {
     resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
-          return $q.reject();
+          return $q.reject('AUTH_REQUIRED');
         } else {
           return $q.resolve();
         }
@@ -75,7 +75,7 @@ app.config(function($stateProvider) {
       resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
-          return $q.reject();
+          return $q.reject('AUTH_REQUIRED');
         } else {
           return $q.resolve();
         }
@@ -92,7 +92,7 @@ app.config(function($stateProvider) {
     resolve: {
       currentUser($q) {
         if (Meteor.userId() === null) {
-          return $q.reject();
+          return $q.reject('AUTH_REQUIRED');
         } else {
           return $q.resolve();
         }
@@ -187,7 +187,7 @@ app.controller('WardrobeAdd', ['$scope', 'toaster', function ($scope, toaster) {
 app.controller('RatingAdd', ['$scope', 'toaster', function ($scope, toaster) {
   console.log('in raitng');
   $scope.newRating = {};
-  
+
   $scope.addRating = function(){
     
 
@@ -260,6 +260,7 @@ function run($rootScope, $state) {
   $rootScope.$on('$stateChangeError',
     (event, toState, toParams, fromState, fromParams, error) => {
       console.log('erroe');
+      console.log(error);
       if (error === 'AUTH_REQUIRED') {
         $state.go('accounts');
       }
