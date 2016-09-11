@@ -26,15 +26,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: '/home',
     templateUrl: HomeTemplate,
     controller: 'Home',
-    resolve: {
-      currentUser($q) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        } else {
-          return $q.resolve();
-        }
-      }
-    }
+    
   }
 
   var wardrobeAdd = {
@@ -42,15 +34,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: '/wardrobe/add',
     templateUrl: WardrobeAddTemplate,
     controller: 'WardrobeAdd',
-    resolve: {
-      currentUser($q) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        } else {
-          return $q.resolve();
-        }
-      }
-    }
+    
   }
 
   var wardrobe = {
@@ -58,15 +42,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: '/wardrobe/view/:id',
     templateUrl: WardrobeTemplate,
     controller: 'Wardrobe',
-    resolve: {
-      currentUser($q) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        } else {
-          return $q.resolve();
-        }
-      }
-    }
+    
   }
 
   var wardrobeShare = {
@@ -74,15 +50,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
       url: '/wardrobe/share',
       templateUrl: WardrobeShareTemplate,
       controller: 'WardrobeShare',
-      resolve: {
-      currentUser($q) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        } else {
-          return $q.resolve();
-        }
-      }
-    }
+      
   }
 
 
@@ -91,15 +59,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: '/rating/add',
     templateUrl: RatingAddTemplate,
     controller: 'RatingAdd',
-    resolve: {
-      currentUser($q) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        } else {
-          return $q.resolve();
-        }
-      }
-    }
+    
   }
 
   var rating = {
@@ -107,15 +67,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: '/rating',
     templateUrl: RatingTemplate,
     controller: 'Rating',
-    resolve: {
-      currentUser($q) {
-        if (Meteor.userId() === null) {
-          return $q.reject('AUTH_REQUIRED');
-        } else {
-          return $q.resolve();
-        }
-      }
-    }
+   
   }
 
   var accounts = {
