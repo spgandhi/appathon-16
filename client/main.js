@@ -10,6 +10,8 @@ import toaster from 'angularjs-toaster'
 import WardrobeShareTemplate from '/client/wardrobe-share.html';
 import AccountsTemplate from '/client/accounts.html';
 
+import RatingTemplate from '/client/ratings.html';
+
 var app = angular.module('socially', [
     angularMeteor,
     'accounts.ui',
@@ -17,7 +19,7 @@ var app = angular.module('socially', [
     toaster
   ]);
 
-app.config(function($stateProvider) {
+app.config(function($stateProvider, $urlRouterProvider) {
   
   var home = {
     name: 'home',
@@ -100,6 +102,22 @@ app.config(function($stateProvider) {
     }
   }
 
+  var rating = {
+    name: 'Rating',
+    url: '/rating',
+    templateUrl: RatingTemplate,
+    controller: 'Rating',
+    resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject('AUTH_REQUIRED');
+        } else {
+          return $q.resolve();
+        }
+      }
+    }
+  }
+
   var accounts = {
     name: 'accounts',
     url: '/accounts',
@@ -111,7 +129,10 @@ app.config(function($stateProvider) {
   $stateProvider.state(wardrobe);
   $stateProvider.state(wardrobeAdd);
   $stateProvider.state(ratingAdd);
+  $stateProvider.state(rating);
   $stateProvider.state(wardrobeShare);
+
+  $urlRouterProvider.otherwise("/home");
 
   
 });
@@ -198,6 +219,7 @@ app.controller('RatingAdd', ['$scope', 'toaster', function ($scope, toaster) {
     }
     
     $scope.newRating.result = {
+      user: Meteor.user()._id,
       item1: 0,
       item2: 0,
       voted_by : [] //end time
@@ -270,4 +292,10 @@ function run($rootScope, $state) {
 
 app.controller('Main', ['$scope', '$stateParams', '$location', function ($scope, $stateParams, $location) {
   
+}])
+
+app.controller('Rating', ['$scope', '$stateParams', '$location', function ($scope, $stateParams, $location) {
+    $scope.fetchData = function(){
+      $scope.ratings = Ratings.find({'result.user': Meteor.user()._id}).fetch();
+    }
 }])

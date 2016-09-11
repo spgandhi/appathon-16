@@ -1,0 +1,25 @@
+<div class="top-float">
+  <h3>Question</h3>
+  <login-buttons></login-buttons>
+</div>
+<div class="wrapu">
+	<button ng-click="fetchData()" class="btn btn-default">Fetch Data</button>
+	<a href="/#/rating/add" class="btn btn-default">Add</a>
+
+	<table class="table">
+	  <tr>
+	  	<th>Images</th>
+	  	<th>Votes</th>
+	  </tr>
+	  <tr ng-repeat="rating in ratings">
+	  	<td>
+	  		<p>{{rating.question}}</p>
+	  		<img src="{{rating.url1}}" width="50px" height="50px">
+	  		<img src="{{rating.url2}}" width="50px" height="50px">
+	  	</td>
+	  	<td>
+	  		{{rating.result.item1}} | {{rating.result.item2}}
+	  	</td>
+	  </tr>
+	</table>
+</div>
