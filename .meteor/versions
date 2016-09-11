@@ -4,6 +4,8 @@ accounts-ui@1.1.8
 accounts-ui-unstyled@1.1.11
 allow-deny@1.0.5
 angular-templates@1.0.9
+angular:angular@1.4.8
+angularui:angular-ui-router@0.2.15
 autopublish@1.0.7
 autoupdate@1.2.11
 babel-compiler@6.9.1

@@ -1,0 +1,12 @@
+<div>
+	<button ng-click="fetchdata()">Fetch</button>
+    <div ng-show="!noMorePosts">
+      <img src={{rating.url1}} width="500px" height="300px">
+      <img src="{{rating.url2}}" width="500px" height="300px">
+      {{item.question}}
+      <input type="radio" ng-model="answer" value="1"> 1
+      <input type="radio" ng-model="answer" value="2"> 2
+      <button ng-click="submitRating()">Submit</button>
+    </div>
+      <div ng-show="noMorePosts" >No more posts</div>
+  </div>
