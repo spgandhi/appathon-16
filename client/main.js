@@ -152,7 +152,7 @@ app.controller('Wardrobe', ['$scope', '$stateParams', function ($scope, $statePa
     if($stateParams.id == Meteor.user()._id){
       $scope.items = Wardrobe.find({user: $stateParams.id}).fetch();
       if($scope.items.length == 0)
-        $scope.message = "No wardrobe items";
+        $scope.message = "No Wardrobe items";
     }else{
       if(Meteor.user().profile && Meteor.user().profile.sharedBy.indexOf($stateParams.id) > -1){
         $scope.items = Wardrobe.find({user: $stateParams.id}).fetch();
