@@ -1,0 +1,25 @@
+<div class="top-float">
+  <h3>Wardrobe</h3>
+  <login-buttons></login-buttons>
+</div>
+<div class="wrapu">
+	<button ng-click="fetchData()" class="btn btn-default">Fetch</button>
+	<button ng-click="toWardrobe()" class="btn btn-default">View</button>
+	<a href="/#/wardrobe/add" class="btn btn-default">Add</a>
+	<h4>Shared By</h4>
+	<li ng-repeat="item in sharedBy">
+		<a href="/#/wardrobe/view/{{item}}">{{item}}</a>
+	</li>
+	<hr>
+	<h4>Shared With</h4>
+	<li ng-repeat="item in sharedWith">
+		<a href="/#/wardrobe/view/{{item}}">{{item}}</a>
+	</li>
+	<hr>
+	<div>
+		<div class="form-group">
+	      <input placeholder="share wardrobe with" ng-model="shareWardrobeWith" class="form-control">
+	    </div>
+	    <button ng-click="shareWardrobe()" class="btn btn-default">Share Wardrobe</button>
+	 </div>
+</div>

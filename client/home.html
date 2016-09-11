@@ -1,12 +1,28 @@
-<div>
-	<button ng-click="fetchdata()">Fetch</button>
+<div class="top-float">
+  <h3>Home</h3>
+  <login-buttons></login-buttons>
+</div>
+
+<div class="wrapu">
+    <button ng-click="fetchData()" class="btn btn-default">Fetch Data</button>
     <div ng-show="!noMorePosts">
-      <img src={{rating.url1}} width="500px" height="300px">
-      <img src="{{rating.url2}}" width="500px" height="300px">
-      {{item.question}}
-      <input type="radio" ng-model="answer" value="1"> 1
-      <input type="radio" ng-model="answer" value="2"> 2
-      <button ng-click="submitRating()">Submit</button>
+      <p>{{rating.question}}</p>
+      <div>
+        <img src={{rating.url1}} class="rating-pic">
+      </div>
+      <div>
+        <img src="{{rating.url2}}" class="rating-pic">
+      </div>
+      
+      <div class="rating-radio">
+        <span class="indi-radio">
+          <input type="radio" ng-model="answer" value="1"> 1
+        </span>
+        <span class="indi-radio">
+          <input type="radio" ng-model="answer" value="2"> 2
+        </span>
+      </div>
+      <button ng-click="submitRating()" style="width:80%; margin: auto; display: block; margin-top:20px" class="btn btn-default">Submit</button>
     </div>
       <div ng-show="noMorePosts" >No more posts</div>
-  </div>
+</div>

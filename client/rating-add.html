@@ -1,6 +1,25 @@
-<form>
-	<input ng-model="newRating.question">
-	<input ng-model="newRating.url1">
-	<input ng-model="newRating.url2">
-	<button ng-click="addRating()">Add item</button>
-</form>	
+<div class="top-float">
+  <h3>Add Question</h3>
+  <login-buttons></login-buttons>
+</div>
+<div class="wrapu">
+  <form>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Question</label>
+      <input ng-model="newRating.question" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputEmail1">URL 1</label>
+      <input ng-model="newRating.url1" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputEmail1">URL 2</label>
+      <input ng-model="newRating.url2" class="form-control">
+    </div>
+
+    <button ng-click="addRating()" class="btn btn-default">Add item</button>
+
+  </form>
+</div>

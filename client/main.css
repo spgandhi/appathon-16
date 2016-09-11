@@ -4,5 +4,93 @@ login-buttons{
 	float: right;
     z-index: 10000000000000;
     position: absolute;
-    right: 200px;
+    right: 20px;
+}
+
+.dashboard-page .main{
+	position: relative;
+    padding: 70px 20px;
+}
+
+li.wardrobe-li {
+    list-style-type: none;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(0,0,0,.2) !important;
+}
+
+.wardrobe-item-name{
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.wardrobe-item{
+	margin-right: auto;
+	margin-left: auto;
+	width: 80%;
+	display: block;
+}
+
+.dashboard-page{
+}
+
+img.rating-pic {
+    width: 80%;
+    margin: auto;
+    display: block;
+    margin-bottom: 50px;
+}
+
+.rating-radio {
+    width: 80%;
+    margin: auto;
+}
+
+span.indi-radio {
+    margin-right: 90px;
+    margin-left: 30px;
+}
+
+.float-bar li {
+    padding: 10px 25px;
+}
+
+.float-bar ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: inline-flex;
+}
+
+.float-bar{
+    position: fixed;
+    bottom: 0;
+    background: white;
+}
+.h1, h2, .h2, h3, .h3{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.top-float{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: white;
+}
+
+login-buttons {
+    z-index: 10000000000000;
+    position: fixed;
+    right: 0;
+    top: 15px;
+}
+
+.top-float h3{
+    padding-left: 30px;
+
+}
+
+body{
+    background-color: #ecf0f1;
 }

@@ -1,31 +1,17 @@
 <toaster-container></toaster-container>
-<login-buttons></login-buttons>
 <div class="dashboard-page">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-3 col-md-2 sidebar">
-
-       <div class="text-center">
-        <h2 class="brand">Ani Theme <small>Free Edition</small></h2>
-        <img src="images/flat-avatar.png" class="user-avatar" /><br />
-        <a ui-sref="login" class="btn btn-white btn-outline btn-rounded btn-sm">Logout</a>
-      </div>
-
-      <ul class="nav nav-sidebar">
-        <li ng-class="{active: $state.includes('overview')}"><a ui-sref="overview">Overview <span class="sr-only">(current)</span></a></li>
-        <li ng-class="{active: $state.includes('reports')}"><a ui-sref="reports">Reports</a></li>
-        <li><a href="http://startreact.com/product/ani-theme/">Free React version</a></li>
-        <li><a href="http://www.strapui.com/ani-angularjs-theme">Angular Premium Edition</a></li>
-      </ul>
-
-    </div>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    	<div>
-			<a ui-sref="reports" class="pull-right btn btn-primary btn-outline btn-rounded">Reports</a>
-			<h2>Overview <small>Why is Ani Theme so awesome?</small></h2>
-			<div ui-view></div>
-		</div>
-    </div>
-  </div>
+	<div class="container-fluid">
+	    <div class="row">
+		    <div class="col-sm-12 col-md-12 main">
+				<div ui-view></div>
+    		</div>
+  		</div>
+	</div>
 </div>
+<div class="float-bar" ng-controller="Main">
+	<ul>
+		<a href="/#/home"><li>Home</li></a>
+		<a href="/#/rating/add"><li>Question</li></a>
+		<a href="/#/wardrobe/share"><li>Wardrobe</li></a>
+	</ul>
 </div>

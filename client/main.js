@@ -1,11 +1,14 @@
 import angular from 'angular';
 import angularMeteor from 'angular-meteor';
+import { Meteor } from 'meteor/meteor';
  
 import WardrobeTemplate from '/client/wardrobe.html';
 import WardrobeAddTemplate from '/client/wardrobe-add.html';
 import RatingAddTemplate from '/client/rating-add.html';
 import HomeTemplate from '/client/home.html';
 import toaster from 'angularjs-toaster'
+import WardrobeShareTemplate from '/client/wardrobe-share.html';
+import AccountsTemplate from '/client/accounts.html';
 
 var app = angular.module('socially', [
     angularMeteor,
@@ -36,51 +39,130 @@ app.config(function($stateProvider) {
     name: 'wardrobe-add',
     url: '/wardrobe/add',
     templateUrl: WardrobeAddTemplate,
-    controller: 'WardrobeAdd'
+    controller: 'WardrobeAdd',
+    resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject();
+        } else {
+          return $q.resolve();
+        }
+      }
+    }
   }
 
   var wardrobe = {
     name: 'Wardrobe',
     url: '/wardrobe/view/:id',
     templateUrl: WardrobeTemplate,
-    controller: 'Wardrobe'
+    controller: 'Wardrobe',
+    resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject();
+        } else {
+          return $q.resolve();
+        }
+      }
+    }
   }
+
+  var wardrobeShare = {
+      name: 'WardrobeShare',
+      url: '/wardrobe/share',
+      templateUrl: WardrobeShareTemplate,
+      controller: 'WardrobeShare',
+      resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject();
+        } else {
+          return $q.resolve();
+        }
+      }
+    }
+  }
+
 
   var ratingAdd = {
     name: 'RatingAdd',
     url: '/rating/add',
     templateUrl: RatingAddTemplate,
-    controller: 'RatingAdd'
+    controller: 'RatingAdd',
+    resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject();
+        } else {
+          return $q.resolve();
+        }
+      }
+    }
   }
 
+  var accounts = {
+    name: 'accounts',
+    url: '/accounts',
+    templateUrl: AccountsTemplate
+  }
+
+  $stateProvider.state(accounts);
   $stateProvider.state(home);
   $stateProvider.state(wardrobe);
   $stateProvider.state(wardrobeAdd);
   $stateProvider.state(ratingAdd);
+  $stateProvider.state(wardrobeShare);
 
   
 });
 
+app.controller('WardrobeShare', ['$scope', '$location', 'toaster', function ($scope, $location, toaster) {
+  console.log(Meteor.user());
+  
+  $scope.toWardrobe  = function(){
+    console.log('to wardrovbe');
+    $location.path('/wardrobe/view/'+Meteor.user()._id);
+  }
+
+  $scope.fetchData = function(){
+    $scope.sharedBy = Meteor.user().profile.sharedBy;
+    $scope.sharedWith = Meteor.user().profile.sharedWith;
+    console.log($scope.sharedWith);
+  }
+
+  $scope.shareWardrobe = function(){
+    console.log($scope.shareWardrobeWith);
+    Meteor.call('shareWardrobe', $scope.shareWardrobeWith);
+    toaster.pop('success',"Success","Shared");
+  }
+    
+}])
+
 app.controller('Wardrobe', ['$scope', '$stateParams', function ($scope, $stateParams) {
-  
-  requested_user = Meteor.users.find({_id: $stateParams.id}).fetch();
-  if(requested_user.length == 0){
-    $scope.message = 'User does not exist';
-    return;
-  }
-  
-  if($stateParams.id == Meteor.user()._id){
-    $scope.items = Wardrobe.find({user: $stateParams.id}).fetch();
-    if($scope.items.length == 0)
-      $scope.message = "No wardrobe items";
-  }else{
-    if(Meteor.user().profile && Meteor.user().profile.sharedBy.indexOf($stateParams.id) > -1){
-      $scope.items = Wardrobe.find({user: $stateParams.id}).fetch();
-    }else{
-      $scope.message = 'Not Allowed';
+
+  $scope.fetchData = function(){
+    requested_user = Meteor.users.find({_id: $stateParams.id}).fetch();
+    if(requested_user.length == 0){
+      $scope.message = 'User does not exist';
+      return;
     }
+
+    // $scope.wardrobeUser = requested_user[0].emails[0].address;
+    
+    if($stateParams.id == Meteor.user()._id){
+      $scope.items = Wardrobe.find({user: $stateParams.id}).fetch();
+      if($scope.items.length == 0)
+        $scope.message = "No wardrobe items";
+    }else{
+      if(Meteor.user().profile && Meteor.user().profile.sharedBy.indexOf($stateParams.id) > -1){
+        $scope.items = Wardrobe.find({user: $stateParams.id}).fetch();
+      }else{
+        $scope.message = 'Not Allowed';
+      }
+    }
+    console.log($scope.items);  
   }
-  console.log($scope.items);
+  
 
 }])
 
@@ -88,36 +170,53 @@ app.controller('WardrobeAdd', ['$scope', 'toaster', function ($scope, toaster) {
   console.log('in add');
   $scope.newItem = {};
   $scope.addItem = function(){
+      
+      console.log($scope.newItem);
+      if($scope.newItem.name === undefined || $scope.newItem.type === undefined || $scope.newItem.url === undefined ||  $scope.newItem.name == '' || $scope.newItem.type=='' || $scope.newItem.url==''){ 
+        toaster.pop('error', "Error", "please fill all the fields"); 
+        return;
+      }
+
       $scope.newItem.user = Meteor.user()._id;
       Wardrobe.insert($scope.newItem);
-      toaster.pop('success', "title", "text");
+      toaster.pop('success', "Success", "Item Added");
       $scope.newItem = {};
     }
 }])
 
-app.controller('RatingAdd', ['$scope', function ($scope) {
+app.controller('RatingAdd', ['$scope', 'toaster', function ($scope, toaster) {
   console.log('in raitng');
+  $scope.newRating = {};
+  
   $scope.addRating = function(){
+    
+
+    
+    if($scope.newRating.question === undefined || $scope.newRating.url1 === undefined || $scope.newRating.url2 === undefined || $scope.newRating.question=='' || $scope.newRating.url1=='' || $scope.newRating.url2==''){ 
+      toaster.pop('error', "Error", "please fill all the fields"); 
+      return;
+    }
+    
     $scope.newRating.result = {
       item1: 0,
       item2: 0,
       voted_by : [] //end time
     }
+
     Ratings.insert($scope.newRating);
+    toaster.pop('success', "Success", "added");
     $scope.newRating = {};
   }
 }])
 
 app.controller('Home', ['$scope', 'toaster', function($scope, toaster) {
-    toaster.pop('success', "title", "text");
-    console.log('in home');
     $scope.answer = '';
     $scope.noMorePosts=false;
 
     $scope.currentRatingItem = 0;
 
-    $scope.fetchdata = function(){
-      $scope.ratings = Ratings.find({voted_by: { "$ne" : Meteor.user()._id} }).fetch(); //Condition
+    $scope.fetchData = function(){
+      $scope.ratings = Ratings.find({'result.voted_by': { "$nin" : [Meteor.user()._id]} }).fetch(); //Condition
       if($scope.ratings.length == 0){
         $scope.noMorePosts=true;
         return;
@@ -133,21 +232,21 @@ app.controller('Home', ['$scope', 'toaster', function($scope, toaster) {
         $scope.rating.result.item1++;
       }else if($scope.answer=='2'){
         $scope.rating.result.item2++;
+      }else{
+        toaster.pop('error', "Error", 'Please select an option!');
+        return;
       }
+
       $scope.answer = '';
       $scope.rating.result.voted_by.push(Meteor.user()._id);
       //update ratings.voted_by with user
       Ratings.update({_id: $scope.rating._id}, $scope.rating);
+
       $scope.currentRatingItem++;
       if($scope.currentRatingItem < $scope.ratings.length)
         $scope.rating = $scope.ratings[$scope.currentRatingItem];
       else
          $scope.noMorePosts=true;
-    }
-
-    $scope.shareWardrobe = function(){
-      console.log($scope.shareWardrobeWith);
-      Meteor.call('shareWardrobe', $scope.shareWardrobeWith);
     }
 
    
@@ -162,8 +261,12 @@ function run($rootScope, $state) {
     (event, toState, toParams, fromState, fromParams, error) => {
       console.log('erroe');
       if (error === 'AUTH_REQUIRED') {
-        $state.go('RatingAdd');
+        $state.go('accounts');
       }
     }
   );
 }
+
+app.controller('Main', ['$scope', '$stateParams', '$location', function ($scope, $stateParams, $location) {
+  
+}])
