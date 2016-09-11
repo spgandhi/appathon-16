@@ -1,11 +1,25 @@
 <form>
-  <input ng-model="newItem.name">
-  <select ng-model="newItem.type">
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">Item Name</label>
+    <input ng-model="newItem.name" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">Type</label>
+    <select ng-model="newItem.type" class="form-control">
     <option value="top">top</option>
     <option value="bottom">bottom</option>
     <option value="shoes">Shoes</option>
     <option value="others">Other</option>
   </select>
-  <input ng-model="newItem.url">
-  <button ng-click="addItem()">Add item</button>
+  </div>
+
+  <div class="form-group">
+    <label for="exampleInputPassword1">Item URL</label>
+    <input ng-model="newItem.url" class="form-control">
+  </div>
+
+  <button ng-click="addItem()" class="btn btn-default">Add item</button>
+
 </form>

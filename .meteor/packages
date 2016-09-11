@@ -24,3 +24,4 @@ accounts-password
 dotansimha:accounts-ui-angular
 cfs:gridfs
 angularui:angular-ui-router
+jirikavi:angularjs-toaster

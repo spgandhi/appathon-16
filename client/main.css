@@ -1,1 +1,8 @@
 /* CSS declarations go here */
+
+login-buttons{
+	float: right;
+    z-index: 10000000000000;
+    position: absolute;
+    right: 200px;
+}

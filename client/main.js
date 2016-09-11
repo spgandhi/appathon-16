@@ -5,11 +5,13 @@ import WardrobeTemplate from '/client/wardrobe.html';
 import WardrobeAddTemplate from '/client/wardrobe-add.html';
 import RatingAddTemplate from '/client/rating-add.html';
 import HomeTemplate from '/client/home.html';
+import toaster from 'angularjs-toaster'
 
 var app = angular.module('socially', [
     angularMeteor,
     'accounts.ui',
-    'ui.router'
+    'ui.router',
+    toaster
   ]);
 
 app.config(function($stateProvider) {
@@ -18,7 +20,16 @@ app.config(function($stateProvider) {
     name: 'home',
     url: '/home',
     templateUrl: HomeTemplate,
-    controller: 'Home'
+    controller: 'Home',
+    resolve: {
+      currentUser($q) {
+        if (Meteor.userId() === null) {
+          return $q.reject();
+        } else {
+          return $q.resolve();
+        }
+      }
+    }
   }
 
   var wardrobeAdd = {
@@ -51,6 +62,7 @@ app.config(function($stateProvider) {
 });
 
 app.controller('Wardrobe', ['$scope', '$stateParams', function ($scope, $stateParams) {
+  
   requested_user = Meteor.users.find({_id: $stateParams.id}).fetch();
   if(requested_user.length == 0){
     $scope.message = 'User does not exist';
@@ -72,12 +84,13 @@ app.controller('Wardrobe', ['$scope', '$stateParams', function ($scope, $statePa
 
 }])
 
-app.controller('WardrobeAdd', ['$scope', function ($scope) {
+app.controller('WardrobeAdd', ['$scope', 'toaster', function ($scope, toaster) {
   console.log('in add');
   $scope.newItem = {};
   $scope.addItem = function(){
       $scope.newItem.user = Meteor.user()._id;
       Wardrobe.insert($scope.newItem);
+      toaster.pop('success', "title", "text");
       $scope.newItem = {};
     }
 }])
@@ -95,7 +108,8 @@ app.controller('RatingAdd', ['$scope', function ($scope) {
   }
 }])
 
-app.controller('Home', ['$scope', function($scope) {
+app.controller('Home', ['$scope', 'toaster', function($scope, toaster) {
+    toaster.pop('success', "title", "text");
     console.log('in home');
     $scope.answer = '';
     $scope.noMorePosts=false;
@@ -138,3 +152,18 @@ app.controller('Home', ['$scope', function($scope) {
 
    
   }]);
+
+app.run(run);
+
+function run($rootScope, $state) {
+  'ngInject';
+ 
+  $rootScope.$on('$stateChangeError',
+    (event, toState, toParams, fromState, fromParams, error) => {
+      console.log('erroe');
+      if (error === 'AUTH_REQUIRED') {
+        $state.go('RatingAdd');
+      }
+    }
+  );
+}
